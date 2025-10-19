@@ -45,12 +45,33 @@ class TemperatureSensor:
         return self.sensor is not None
 
 
+class DHT22(TemperatureSensor):
+    def __init__(self, sensor: object) -> None:
+        super().__init__(sensor)
+
+    def measure(self) -> float:
+        self.sensor.measure()
+        return self.sensor.temperature()
+
+
+class SHT30(TemperatureSensor):
+    def __init__(self, sensor: object) -> None:
+        super().__init__(sensor)
+
+    def measure(self) -> float:
+        information = self.sensor.measure_basic()
+        return information[0]
+
+
 class Screen:
     def __init__(self, screen: object) -> None:
         self._screen: object = screen
 
     def measure(self) -> float:
         return 0
+
+    def has_ref(self) -> bool:
+        return REF_TYPE in ("DHT22", "SHT30")
 
     @property
     def screen(self):
@@ -97,24 +118,6 @@ class Screen:
             ref_average (float): referenssianturin lämpötilan keskiarvo
         """
         pass
-
-
-class DHT22(TemperatureSensor):
-    def __init__(self, sensor: object) -> None:
-        super().__init__(sensor)
-
-    def measure(self) -> float:
-        self.sensor.measure()
-        return self.sensor.temperature()
-
-
-class SHT30(TemperatureSensor):
-    def __init__(self, sensor: object) -> None:
-        super().__init__(sensor)
-
-    def measure(self) -> float:
-        information = self.sensor.measure_basic()
-        return information[0]
 
 
 class Oled(Screen):
@@ -188,7 +191,7 @@ class LED(Screen):
         led_temp: float,
         ref_temp: float,
     ) -> None:
-        if use_dht22 or use_sht30:
+        if self.has_ref():
             self.screen.putstr(f"LED TEMP: {led_temp:.1f}C\nREF TEMP: {ref_temp:.1f}C")
         else:
             self.screen.putstr(f"LED TEMP: {led_temp:.1f}C\nVOLTAGE: {voltage:.4f}V")
@@ -199,7 +202,7 @@ class LED(Screen):
     def finish(
         self, led_avg: float, voltage_average: float, ref_average: float
     ) -> None:
-        if use_dht22 or use_sht30:
+        if self.has_ref():
             self.screen.putstr(
                 f"LED TEMP: {led_avg:.1f}C\nREF TEMP: {ref_average:.1f}C"
             )
