@@ -85,10 +85,12 @@ def init_peripherals(ref_sensor, screen) -> None:
             target, led_avg: float, voltage_average: float, ref_average: float
         ) -> None:
             """Kutsutaan mittauksen lopuksi
-            target = näyttöobjekti
-            led_avg = LED lämpötilan keskiarvo
-            voltage_average = LED jännitteen keskiarvo
-            ref_average = referenssianturin lämpötilan keskiarvo
+
+            Args:
+                target (näyttö): näyttöobjekti
+                led_avg (float): LED lämpötilan keskiarvo
+                voltage_average (float): LED jännitteen keskiarvo
+                ref_average (float): referenssianturin lämpötilan keskiarvo
             """
             if use_dht22 or use_sht30:
                 target.putstr(f"LED TEMP: {led_avg:.1f}C\nREF TEMP: {ref_average:.1f}C")
@@ -127,10 +129,12 @@ def init_peripherals(ref_sensor, screen) -> None:
             target, led_avg: float, voltage_average: float, ref_average: float
         ) -> None:
             """Kutsutaan mittauksen lopuksi
-            target = näyttöobjekti
-            led_avg = LED lämpötilan keskiarvo
-            voltage_average = LED jännitteen keskiarvo
-            ref_average = referenssianturin lämpötilan keskiarvo
+
+            Args:
+                target (näyttö): näyttöobjekti
+                led_avg (float): LED lämpötilan keskiarvo
+                voltage_average (float): LED jännitteen keskiarvo
+                ref_average (float): referenssianturin lämpötilan keskiarvo
             """
             target.fill_rect(0, 24, 68, 8, 0)
             target.text(f"LED {led_avg:.1f}C", 0, 24)

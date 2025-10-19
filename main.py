@@ -6,7 +6,7 @@ from machine import ADC, Pin
 from peripherals import init_peripherals
 
 # LED parametrit
-led_adc = ADC(Pin(28))  # Pin 28 = ADC2
+led_ADC_pin = ADC(Pin(28))  # Pin 28 = ADC2
 led_ref_voltage = 3.3  # viitejännite (Picon 3.3V)
 led_ADC_bits = 65535  # 16-bittinen muunnos, volteista biteiksi (3.3V = 65535, 0.0V = 0)
 
@@ -60,7 +60,7 @@ def main() -> None:
             voltage_sum = 0
             for j in range(200):  # otetaan 200 mittausta
                 time.sleep(0.01)
-                raw = led_adc.read_u16()
+                raw = led_ADC_pin.read_u16()
                 voltage_sum += raw  # ynnätään jännitteet(bitteinä)
 
                 # Ruudun päivitys

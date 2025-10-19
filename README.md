@@ -41,7 +41,7 @@ Jos et käytä valinnaisia osia aseta `use_dht22`, `use_sht30`, `use_LCD` ja `us
 
 ## Kytkentäkaavio
 ![alt text](image.png)
-Wokwi diagrammi: [a relative link](diagram.json)
+Wokwi diagrammi: [diagram.json](diagram.json)
 
 
 
