@@ -1,4 +1,4 @@
-# Lämpötilan mittaus LEDin avulla käyttämällä Pico 2 W:tä
+# Lämpötilan mittaus 3M2S-anturilla ja PICO 2 W:llä
 
 ## Aloitus
 Tämä projekti käyttää aliprojekteina seuraavia kirjastoja:
