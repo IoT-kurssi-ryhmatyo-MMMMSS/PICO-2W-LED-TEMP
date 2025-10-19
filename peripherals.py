@@ -1,5 +1,3 @@
-import re
-
 from machine import Pin
 
 # Käytettävät vapaaehtoiset anturit/näytöt, muutettava tarpeen mukaan
@@ -32,8 +30,6 @@ LCD_config = {
     "num_lines": 2,
     "num_columns": 16,
 }
-ref_sensor = {}  # Asetetaan init_peripheralssissa
-screen = {}  # Asetetaan init_peripheralssissa
 
 
 class TemperatureSensor:
