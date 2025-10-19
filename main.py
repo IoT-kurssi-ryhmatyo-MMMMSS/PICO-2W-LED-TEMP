@@ -12,7 +12,9 @@ led_ADC_bits = 65535  # 16-bittinen muunnos, volteista biteiksi (3.3V = 65535, 0
 
 # LED kalibroinnit, nämä kaksi muutettava !!
 led_temp_calibration = 24.60  # Kalibroinnin lämpötila (yleensä 25°C!)
-led_forward_voltage = 1.7221454  # kynnysjännite (ADC2 lukema jännite) kalibroinnin lämpötilassa
+led_forward_voltage = (
+    1.7221454  # kynnysjännite (ADC2 lukema jännite) kalibroinnin lämpötilassa
+)
 
 # jännitteen muutos/°C, lineaarisena keskiarvona +25°-40°C ~-2mV/°C (millivoltteja)
 # -0.002 on hyvä yleiskeskiarvo
@@ -25,10 +27,8 @@ update_interval = 10  # kuinka usein päivitetään näyttöä mittauksessa (10 
 
 
 def main() -> None:
-    ref_sensor = {}  # referenssianturi objekti, täyetään init_peripheralsissa
-    screen = {}  # näyttö objekti, täytetään init_peripheralsissa
-    init_peripherals(ref_sensor, screen)
-    # .CSV luonti
+    ref_sensor, screen = init_peripherals()
+    # .csv luonti
     try:
         with open(csv_filename, "r") as file:
             pass
@@ -54,7 +54,7 @@ def main() -> None:
             time.sleep(5)
             # ref lämpötila joka 5s
             if ref_sensor:
-                ref_sum += ref_sensor["measure"]()
+                ref_sum += ref_sensor.measure()
 
             # ADC-lukema jännitteeksi:
             voltage_sum = 0
@@ -73,9 +73,7 @@ def main() -> None:
                         led_temp_calibration
                         + (led_voltage - led_forward_voltage) / led_coefficent
                     )
-                    screen["onUpdate"](
-                        screen["screen"], j, i, led_voltage, led_temp, ref_sum / (i + 1)
-                    )
+                    screen.update(j, i, led_voltage, led_temp, ref_sum / (i + 1))
 
             led_raw = voltage_sum / 200  # lasketaan keskiarvo(bitteinä)
             # print(led_raw / led_ADC_bits * 3.3)
@@ -87,15 +85,14 @@ def main() -> None:
             # Lasketaan lämpötila suhteessa kalibrointiin
             # lämpötila = kalibroinnin lämpötila + (mitattu kynnysjännite - kalibroinnin jännite) / jännitteen muutos/°C
             led_temp: float = (
-                led_temp_calibration + (led_voltage - led_forward_voltage) / led_coefficent
+                led_temp_calibration
+                + (led_voltage - led_forward_voltage) / led_coefficent
             )
             led_temperature_sum += led_temp
             # Päivitetään näyttö ennen 5s unta
             if screen:
-                screen["onUpdate"](
-                    screen["screen"], 199, i, led_voltage, led_temp, ref_sum / (i + 1)
-                )
-                screen["onSleep"](screen["screen"])
+                screen.update(199, i, led_voltage, led_temp, ref_sum / (i + 1))
+                screen.sleep()
 
         led_temperature_average = led_temperature_sum / 3
         led_voltage_average = led_voltage_sum / 3
@@ -114,8 +111,7 @@ def main() -> None:
         print("LED Voltage: {}".format(led_voltage_average))
         print("LED Temperature: {:.2f}°C".format(led_temperature_average))
         if screen:
-            screen["onFinish"](
-                screen["screen"],
+            screen.finish(
                 led_temperature_average,
                 led_voltage_average,
                 ref_average,
