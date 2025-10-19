@@ -9,7 +9,8 @@ Aliprojektit voi alustaa seuraavilla komennoilla:
 ```
 git submodule update --init
 git submodule foreach "git submodule update --init"
-```
+```  
+Jos et käytä referenssianturia tai näyttöä aliprojektit voi jättää pois.
 
 ### Komponentit
 * Raspberry Pi Pico 2 W
@@ -37,7 +38,7 @@ Aseta `main.py` tiedostossa:
 Avaa `peripherals.py` ja määritä haluamasi anturi ja näyttö, molemmat ovat vapaaehtoisia.  
 Voit käyttää DHT22 tai SHT30 lämpötila- ja kosteusanturia referenssianturina.  
 Näytöksi voi valita I2C LCD näytön tai SH1106 OLED näytön.  
-Jos et käytä valinnaisia osia aseta `use_dht22`, `use_sht30`, `use_LCD` ja `use_sh1106` arvoksi `False`.
+Jos et käytä valinnaisia osia aseta `SCREEN_TYPE` ja `REF_TYPE` arvoksi `"None"`.
 
 ## Kytkentäkaavio
 ![alt text](image.png)
@@ -46,5 +47,10 @@ Wokwi diagrammi: [diagram.json](diagram.json)
 
 
 ## Käyttö
-Siirrä `pico_i2c_lcd.py`, `lcd_api.py`, `sh1106.py` Pico 2 W:lle  
+Jos käyttät näyttöä/ref-anturia, asenna ja siirrä Picolle tarvittavat kirjastot:
+- I2C LCD:lle `pico_i2c_lcd.py` ja `lcd_api.py` tiedostot
+- SH1106 OLED:lle `sh1106.py` tiedosto
+- DHT22, sisäänrakennettu, ei toimenpiteitä
+- SHT30:lle ???
+
 Siirrä main.py ja peripherals.py Pico 2 W:lle ja suorita main.py

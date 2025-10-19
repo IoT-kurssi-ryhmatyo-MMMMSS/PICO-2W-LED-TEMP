@@ -1,10 +1,8 @@
 from machine import Pin
 
 # Käytettävät vapaaehtoiset anturit/näytöt, muutettava tarpeen mukaan
-use_sh1106 = True
-use_LCD = False
-use_dht22 = True
-use_sht30 = False
+SCREEN_TYPE = "SH1106"  # "SH1106" tai "LCD" tai "NONE"
+REF_TYPE = "DHT22"  # "DHT22", "SHT30" tai "NONE"
 
 dht_config = {"pin": 17}
 sht30_config = {
@@ -99,6 +97,7 @@ class Screen:
             ref_average (float): referenssianturin lämpötilan keskiarvo
         """
         pass
+
 
 class DHT22(TemperatureSensor):
     def __init__(self, sensor: object) -> None:
@@ -214,8 +213,8 @@ def init_peripherals() -> tuple[TemperatureSensor | None, Screen | None]:
     ref_sensor = None
     screen = None
 
-    ## Todo
-    if use_LCD:
+    ## Testaamatonta koodia, ei löytynyt laitteita
+    if SCREEN_TYPE == "LCD":
         from lcd_api import LcdApi
         from machine import I2C
         from pico_i2c_lcd import I2cLcd
@@ -229,8 +228,7 @@ def init_peripherals() -> tuple[TemperatureSensor | None, Screen | None]:
 
         screen = LED(I2cLcd(i2c, LCD_config["num_lines"], LCD_config["num_columns"]))
         screen.hello_world()
-
-    if use_sh1106:
+    elif SCREEN_TYPE == "SH1106":
         import sh1106
 
         if sh1106_config["mode"] == 0:
@@ -257,12 +255,11 @@ def init_peripherals() -> tuple[TemperatureSensor | None, Screen | None]:
         )
         screen.hello_world()
 
-    if use_dht22:
+    if REF_TYPE == "DHT22":
         import dht
 
         ref_sensor = DHT22(dht.DHT22(Pin(dht_config["pin"])))
-
-    if use_sht30:
+    elif REF_TYPE == "SHT30":
         import sht3x
 
         ref_sensor = SHT30(sht3x.SHT3x(**sht30_config))
