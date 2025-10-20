@@ -27,12 +27,12 @@ Jos et käytä referenssianturia tai näyttöä aliprojektit voi jättää pois.
 Aseta `main.py` tiedostossa:
   * led_adc: ADC pinni, johon LED on kytketty
   * led_ref_voltage: LEDin referenssijännite (esim. 3.3V)
-  * led_ADC_bits: ADC bittisyvyys
+  * led_adc_bits: ADC bittisyvyys
   * led_temp_calibration: LEDin lämpötilakalibrointi
   * led_forward_voltage: LEDin jännite kalibrointipisteessä
   * led_coefficent: LEDin lämpötilakerroin  V/°C, esim. -0.0020
   * csv_filename: CSV tiedoston nimi, johon tallennetaan mittaustiedot
-  * update_interval: Päivitysväli sekunteina
+  * update_interval: kuinka monen mittauksen välein näytön päivitys tapahtuu (10 = 0.1s välein)
 
 #### Vapaaehtoiset anturit ja näytöt
 Avaa `peripherals.py` ja määritä haluamasi anturi ja näyttö, molemmat ovat vapaaehtoisia.  
@@ -43,6 +43,14 @@ Jos et käytä valinnaisia osia aseta `SCREEN_TYPE` ja `REF_TYPE` arvoksi `"None
 ## Kytkentäkaavio
 ![alt text](image.png)
 Wokwi diagrammi: [diagram.json](diagram.json)
+
+
+## Kehittäminen
+Jos haluat editoriisi MicroPythonin automaattisen täydennyksen,
+voit asentaa MicroPython-stubit seuraavalla komennolla:
+```
+pip install micropython-rp2-pico_w-stubs
+```
 
 
 

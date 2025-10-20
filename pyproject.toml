@@ -1,0 +1,46 @@
+[project]
+name = "PICO-2W-LED-TEMP"
+readme = "README.md"
+license = "MIT"
+
+[project.optional-dependencies]
+stubs = [
+  "micropython-rp2-pico_w-stubs"
+]
+
+[project.urls]
+Homepage = "https://github.com/IoT-kurssi-ryhmatyo-MMMMSS/PICO-2W-LED-TEMP"
+
+# ###################################################################
+# pyright options:
+# ###################################################################
+
+[tool.pyright]
+reportMissingModuleSource = "none"  # Ei micropythonia
+reportUnusedCallResult = "none"  # pin.value() jne. kutsujen tuloksia ei käytetä
+reportUnknownMemberType = "none"  # micropython stubb palautteleee vähän mitä sattuu
+reportUnknownVariableType = "none"  # micropython stubb palautteleee vähän mitä sattuu
+reportUnboundVariable = "none"  # pyright ei tunnista if blocking importteja
+reportImplicitOverride = "none"  # micropythonissa ei ole typing -moduulia
+reportUnnecessaryComparison = "none"  # käyttäjän asettama arvo
+
+# ###################################################################
+# ruff options:
+# ###################################################################
+
+[tool.ruff]
+line-length = 100
+exclude = []
+
+[tool.ruff.lint]
+select = ["ALL"]
+
+ignore = [
+  "T201",  # print statement found, konsoliin tulostus OK
+  "PTH123", # builtin-open, Micropython ei tue pathlib Pathiä
+  "COM812", # Missing trailing comma
+  "TC002",  # typing-only-third-party-import, micropython ei tue
+  "PLC0415", # import should be at the top level of file, Ei haluta importate kaikkea
+  "F823",  # undefined-local, Ruff ei tunnista if blocking importteja
+  "D102",  # Missing docstring in public function, väärä hälytys johtuen @override puutteesta
+]
